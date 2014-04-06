@@ -4,11 +4,10 @@
 // Redistribution and use in source and binary forms, with or without
 // modification, are permitted provided that the following conditions are met:
 //
-// 1. Redistributions of source code must retain the above copyright notice, this
+// 1. This file must retain the above copyright notice, this list of conditions
+//    and the following disclaimer.
+// 2. Redistributions of source code must retain the above copyright notice, this
 //    list of conditions and the following disclaimer.
-// 2. Redistributions in binary form must reproduce the above copyright notice,
-//    this list of conditions and the following disclaimer in the documentation
-//    and/or other materials provided with the distribution.
 //
 // THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND
 // ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
@@ -20,12 +19,8 @@
 // ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
 // (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
 // SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
-//
-// The views and conclusions contained in the software and documentation are those
-// of the authors and should not be interpreted as representing official policies,
-// either expressed or implied, of the FreeBSD Project.
 
-namespace Toolbox.NET.UnitTest.AutoEventConnector
+namespace Toolbox.NET.UnitTest
 {
     using System;
     using System.Collections.Generic;
@@ -37,9 +32,9 @@ namespace Toolbox.NET.UnitTest.AutoEventConnector
     /// Summary description for UnitTest1
     /// </summary>
     [TestClass]
-    public class AutoEventConnector_UnitTest
+    public class AutoEventConnectorBehaviour
     {
-        public AutoEventConnector_UnitTest()
+        public AutoEventConnectorBehaviour()
         {
             //
             // TODO: Add constructor logic here
