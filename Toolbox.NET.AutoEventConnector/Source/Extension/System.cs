@@ -29,7 +29,7 @@ namespace System
 
     public static class AutoEventConnector
     {
-        private static Dictionary<StaticTuple<Type, Type>, List<Tuple<Action<object, object>, Action<object, object>>>> cache = new Dictionary<StaticTuple<Type, Type>, List<Tuple<Action<object, object>, Action<object, object>>>>();
+		private static Dictionary<StaticTuple<Type, Type>, List<AttachDetach>> cache = new Dictionary<StaticTuple<Type, Type>, List<AttachDetach>>();
 
         internal static int CacheCount
         {
@@ -44,7 +44,7 @@ namespace System
             var cacheValue = GetCached(pub, sub);
             if (cacheValue != null)
             {
-                cacheValue.ForEach(x => x.Item1(pub, sub));
+				cacheValue.ForEach(x => x.Attach(pub, sub));
             }
         }
 
@@ -53,21 +53,21 @@ namespace System
             var cacheValue = GetCached(pub, sub);
             if (cacheValue != null)
             {
-                cacheValue.ForEach(x => x.Item2(pub, sub));
+				cacheValue.ForEach(x => x.Detach(pub, sub));
             }
         }
 
-        private static List<Tuple<Action<object, object>, Action<object, object>>> GetCached(object pub, object sub)
+		private static List<AttachDetach> GetCached(object pub, object sub)
         {
             var subType = sub.GetType();
             var subMethods = subType.GetMethods(BindingFlags.Instance | BindingFlags.NonPublic);
             var pubType = pub.GetType();
             var pubEvents = pubType.GetEvents();
             var cacheKey = StaticTuple.Create(pubType, subType);
-            List<Tuple<Action<object, object>, Action<object, object>>> cacheValue;
+			List<AttachDetach> cacheValue;
             if (!cache.TryGetValue(cacheKey, out cacheValue))
             {
-                cacheValue = new List<Tuple<Action<object, object>, Action<object, object>>>();
+				cacheValue = new List<AttachDetach>();
                 foreach (var pubEvent in pubEvents)
                 {
                     var addMethod = pubEvent.GetAddMethod();
@@ -87,7 +87,7 @@ namespace System
                             && parameters.Zip(delegateParameters, (a, b) => (a.ParameterType == b.ParameterType) ? a : null).All(x => x != null))
                         {
                             cacheValue.Add(
-                                Tuple.Create(
+								new AttachDetach(
                                 new Action<object, object>((p, s) => addMethod.Invoke(p, new object[] { Delegate.CreateDelegate(pubEvent.EventHandlerType, s, handlerMethod) })),
                                 new Action<object, object>((p, s) => removeMethod.Invoke(p, new object[] { Delegate.CreateDelegate(pubEvent.EventHandlerType, s, handlerMethod) }))));
                         }
@@ -104,5 +104,18 @@ namespace System
 
             return cacheValue;
         }
+
+		private sealed class AttachDetach
+		{
+			public AttachDetach(Action<object, object> attach, Action<object, object> detach)
+			{
+				this.Attach = attach;
+				this.Detach = detach;
+			}
+
+			public Action<object, object> Attach { get; private set; }
+
+			public Action<object, object> Detach { get; private set; }
+		}
     }
 }
