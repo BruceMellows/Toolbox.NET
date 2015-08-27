@@ -7,3 +7,15 @@ private methods.
 The 'static tuple' tool is similar to a standard tuple, except that it
 provides Equals functionality that only checkes for reference equality,
 good for tuple of type used as keys in dictionary for example.
+
+The 'auto connect property' tool simplifies copying properties from one
+type to another by copying getters to setters where the name and type is
+the same and the protection is public.
+
+The 'type serialiser' converts objects to xml and back, both ends need
+to understand the types involved. This can also be used to convert types
+to the C# representation which can be nice.
+
+The 'factory' is like the usual factory (a box of constructors), but
+provides support for passing parameters to the constructors in a
+natural (for C#) way.
