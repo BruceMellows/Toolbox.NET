@@ -20,6 +20,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Toolbox.NET.Factory.Interfa
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Toolbox.NET.Factory.Implementation", "Toolbox.NET.Factory.Implementation\Toolbox.NET.Factory.Implementation.csproj", "{D2E2FC83-9B23-4AB4-BCB4-F23BF925B80E}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Toolbox.NET.AutoPropertyCopy", "Toolbox.NET.AutoPropertyCopy\Toolbox.NET.AutoPropertyCopy.csproj", "{8C4937A7-4BD6-4529-9909-5F98F293DFA8}"
+EndProject
 Global
 	GlobalSection(TestCaseManagementSettings) = postSolution
 		CategoryFile = Toolbox.NET.vsmdi
@@ -53,6 +55,10 @@ Global
 		{D2E2FC83-9B23-4AB4-BCB4-F23BF925B80E}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{D2E2FC83-9B23-4AB4-BCB4-F23BF925B80E}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{D2E2FC83-9B23-4AB4-BCB4-F23BF925B80E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8C4937A7-4BD6-4529-9909-5F98F293DFA8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8C4937A7-4BD6-4529-9909-5F98F293DFA8}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8C4937A7-4BD6-4529-9909-5F98F293DFA8}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8C4937A7-4BD6-4529-9909-5F98F293DFA8}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
