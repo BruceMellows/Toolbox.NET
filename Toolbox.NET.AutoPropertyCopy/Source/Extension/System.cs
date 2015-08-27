@@ -74,9 +74,14 @@ namespace System
 				cacheValue = new List<SinglePropertyCopy>();
 				foreach (var copiedProperty in copiedProperties)
 				{
-					var getMethod = srcProperties.Single(x => copiedProperty == x.Name).GetGetMethod();
-					var setMethod = tgtProperties.Single(x => copiedProperty == x.Name).GetSetMethod();
-					cacheValue.Add(new SinglePropertyCopy(new Action<object, object>((s, t) => setMethod.Invoke(t, new object[] { getMethod.Invoke(s, null) }))));
+					var getProperty = srcProperties.Single(x => copiedProperty == x.Name);
+					var getMethod = getProperty.GetGetMethod();
+					var setProperty = tgtProperties.Single(x => copiedProperty == x.Name);
+					var setMethod = setProperty.GetSetMethod();
+					if (getProperty.PropertyType == setProperty.PropertyType)
+					{
+						cacheValue.Add(new SinglePropertyCopy(new Action<object, object>((s, t) => setMethod.Invoke(t, new object[] { getMethod.Invoke(s, null) }))));
+					}
 				}
 
 				if (!cache.ContainsKey(cacheKey))
