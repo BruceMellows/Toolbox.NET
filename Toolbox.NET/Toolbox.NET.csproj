@@ -40,7 +40,30 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="../Toolbox.NET.AutoEventConnector/Source/Extension/System.cs" />
+    <Compile Include="../Toolbox.NET.AutoPropertyCopy/Source/Extension/System.cs" />
+    <Compile Include="../Toolbox.NET.Factory.Implementation/Source/Factory.cs" />
+    <Compile Include="../Toolbox.NET.Factory.Implementation/Source/Factory.Orcs.cs" />
+    <Compile Include="../Toolbox.NET.Factory.Implementation/Source/FactoryCreateService.cs" />
+    <Compile Include="../Toolbox.NET.Factory.Implementation/Source/FactoryWidgetItemSink.cs" />
+    <Compile Include="../Toolbox.NET.Factory.Implementation/Source/FactoryWidgetMaker.cs" />
+    <Compile Include="../Toolbox.NET.Factory.Implementation/Source/FindFailAction.cs" />
+    <Compile Include="../Toolbox.NET.Factory.Implementation/Source/ListSystemTypeComparer.cs" />
+    <Compile Include="../Toolbox.NET.Factory.Implementation/Source/MergeType.cs" />
+    <!-- Compile Include="../Toolbox.NET.Factory.Interface/Source/IFactory.cs" / -->
+    <!-- Compile Include="../Toolbox.NET.Factory.Interface/Source/IFactory.Externsions.cs" / -->
+    <!-- Compile Include="../Toolbox.NET.Factory.Interface/Source/IFactoryItemSink.cs" / -->
+    <!-- Compile Include="../Toolbox.NET.Factory.Interface/Source/ItemSinkDuplicate.cs" / -->
+    <!-- Compile Include="../Toolbox.NET.Factory.Interface/Source/IWidgetMaker.cs" / -->
+    <Compile Include="../Toolbox.NET.StaticTuple/Source/StaticTuple.cs" />
+    <Compile Include="../Toolbox.NET.TypeSerialiser/Source/TypeSerialiser.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Toolbox.NET.Factory.Interface\Toolbox.NET.Factory.Interface.csproj">
+      <Project>{DF33D3FC-C525-48D4-B20D-49BEDE62012D}</Project>
+      <Name>Toolbox.NET.Factory.Interface</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
