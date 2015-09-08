@@ -102,6 +102,8 @@ namespace Toolbox.NET.UnitTest
 			Assert.AreEqual(testPropertySource.Property3, testPropertyTarget.Property3);
 			Assert.AreNotEqual(testPropertySource.Property4, testPropertyTarget.Property4);
 			Assert.AreNotEqual(testPropertySource.Property5, testPropertyTarget.Property5);
+			Assert.AreEqual(testPropertySource.Property6, testPropertyTarget.Property6);
+			Assert.AreEqual(testPropertySource.Property7, testPropertyTarget.Property7);
 		}
 
 		[TestMethod]
@@ -123,6 +125,8 @@ namespace Toolbox.NET.UnitTest
 			Assert.AreEqual(testPropertySource.Property3, testPropertyTarget1.Property3);
 			Assert.AreNotEqual(testPropertySource.Property4, testPropertyTarget1.Property4);
 			Assert.AreNotEqual(testPropertySource.Property5, testPropertyTarget1.Property5);
+			Assert.AreEqual(testPropertySource.Property6, testPropertyTarget1.Property6);
+			Assert.AreEqual(testPropertySource.Property7, testPropertyTarget1.Property7);
 
 			testPropertySource.CopyProperties(testPropertyTarget2);
 
@@ -131,6 +135,8 @@ namespace Toolbox.NET.UnitTest
 			Assert.AreEqual(testPropertySource.Property3, testPropertyTarget2.Property3);
 			Assert.AreNotEqual(testPropertySource.Property4, testPropertyTarget2.Property4);
 			Assert.AreNotEqual(testPropertySource.Property5, testPropertyTarget2.Property5);
+			Assert.AreEqual(testPropertySource.Property6, testPropertyTarget2.Property6);
+			Assert.AreEqual(testPropertySource.Property7, testPropertyTarget2.Property7);
 		}
 
 		[TestMethod]
@@ -155,6 +161,8 @@ namespace Toolbox.NET.UnitTest
 				this.Property2 = Guid.NewGuid().ToString();
 				this.Property4 = Guid.NewGuid().ToString();
 				this.Property5 = 12345;
+				this.Property6 = 6;
+				this.Property7 = 7;
 			}
 
 			public string Property1 { get; set; }
@@ -166,6 +174,10 @@ namespace Toolbox.NET.UnitTest
 			internal string Property4 { get; set; }
 
 			public int Property5 { get; set; }
+
+			public int? Property6 { get; set; }
+
+			public int Property7 { get; set; }
 		}
 
 		private sealed class TestPropertyTarget
@@ -176,6 +188,8 @@ namespace Toolbox.NET.UnitTest
 				this.Property2 = Guid.NewGuid().ToString();
 				this.Property4 = Guid.NewGuid().ToString();
 				this.Property5 = Guid.NewGuid().ToString();
+				this.Property6 = -6;
+				this.Property7 = -7;
 			}
 
 			public string Property1 { get; set; }
@@ -183,6 +197,8 @@ namespace Toolbox.NET.UnitTest
 			public string Property3 { get; set; }
 			public string Property4 { get; set; }
 			public string Property5 { get; set; }
+			public int Property6 { get; set; }
+			public int? Property7 { get; set; }
 		}
 	}
 }

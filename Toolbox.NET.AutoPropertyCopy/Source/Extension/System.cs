@@ -41,14 +41,24 @@ namespace System
 
 		public static void CopyProperties(this object src, object tgt)
 		{
-			var cacheValue = GetCached(src, tgt);
-			if (cacheValue != null)
+			if (src != null && tgt != null)
 			{
-				cacheValue.ForEach(x => x.CopyProperty(src, tgt));
+				GetCachedCopier(src, tgt).CopyProperties(src, tgt);
 			}
 		}
 
-		private static List<SinglePropertyCopy> GetCached(object src, object tgt)
+		private static void CopyProperties(this IEnumerable<SinglePropertyCopy> copier, object src, object tgt)
+		{
+			if (copier != null)
+			{
+				foreach (var singleCopy in copier)
+				{
+					singleCopy.CopyProperty(src, tgt);
+				}
+			}
+		}
+
+		private static List<SinglePropertyCopy> GetCachedCopier(object src, object tgt)
 		{
 			var srcType = src.GetType();
 			var tgtType = tgt.GetType();
@@ -57,32 +67,14 @@ namespace System
 			List<SinglePropertyCopy> cacheValue;
 			if (!cache.TryGetValue(cacheKey, out cacheValue))
 			{
-				var srcProperties = srcType.GetProperties(BindingFlags.Instance | BindingFlags.Public).Where(x =>
-				{
-					var getMethod = x.GetGetMethod();
-					return getMethod != null && getMethod.IsPublic;
-				}).ToArray();
-
-				var tgtProperties = tgtType.GetProperties(BindingFlags.Instance | BindingFlags.Public).Where(x =>
-				{
-					var setMethod = x.GetSetMethod();
-					return setMethod != null && setMethod.IsPublic;
-				}).ToArray();
-
+				var srcProperties = GetProperties(srcType, x => x.GetGetMethod()).ToArray();
+				var tgtProperties = GetProperties(tgtType, x => x.GetSetMethod()).ToArray();
 				var copiedProperties = srcProperties.Select(x => x.Name).Intersect(tgtProperties.Select(x => x.Name)).ToArray();
 
-				cacheValue = new List<SinglePropertyCopy>();
-				foreach (var copiedProperty in copiedProperties)
-				{
-					var getProperty = srcProperties.Single(x => copiedProperty == x.Name);
-					var getMethod = getProperty.GetGetMethod();
-					var setProperty = tgtProperties.Single(x => copiedProperty == x.Name);
-					var setMethod = setProperty.GetSetMethod();
-					if (getProperty.PropertyType == setProperty.PropertyType)
-					{
-						cacheValue.Add(new SinglePropertyCopy(new Action<object, object>((s, t) => setMethod.Invoke(t, new object[] { getMethod.Invoke(s, null) }))));
-					}
-				}
+				cacheValue = copiedProperties
+					.Select(x => CreatePropertyCopier(srcProperties, tgtProperties, x))
+					.Where(x => x != null)
+					.ToList();
 
 				if (!cache.ContainsKey(cacheKey))
 				{
@@ -93,6 +85,39 @@ namespace System
 			}
 
 			return cacheValue;
+		}
+
+		private static IEnumerable<PropertyInfo> GetProperties(Type type, Func<PropertyInfo, MethodInfo> getTargetMethod)
+		{
+			return type.GetProperties(BindingFlags.Instance | BindingFlags.Public).Where(x =>
+			{
+				var targetMethod = getTargetMethod(x);
+				return targetMethod != null && targetMethod.IsPublic;
+			});
+		}
+
+		private static Type GetEffectiveType(PropertyInfo propertyInfo)
+		{
+			var effectiveType = propertyInfo.PropertyType;
+
+			return (effectiveType.IsGenericType && effectiveType.GetGenericTypeDefinition() == typeof(Nullable<>))
+				? effectiveType.GetGenericArguments().Single()
+				: effectiveType;
+		}
+
+		private static SinglePropertyCopy CreatePropertyCopier(IEnumerable<PropertyInfo> srcProperties, IEnumerable<PropertyInfo> tgtProperties, string copiedProperty)
+		{
+			var getProperty = srcProperties.Single(x => copiedProperty == x.Name);
+			var getMethod = getProperty.GetGetMethod();
+			var effectiveGetType = GetEffectiveType(getProperty);
+
+			var setProperty = tgtProperties.Single(x => copiedProperty == x.Name);
+			var setMethod = setProperty.GetSetMethod();
+			var effectiveSetType = GetEffectiveType(setProperty);
+
+			return effectiveGetType == effectiveSetType
+				? new SinglePropertyCopy(new Action<object, object>((s, t) => setMethod.Invoke(t, new object[] { getMethod.Invoke(s, null) })))
+				: null;
 		}
 
 		private sealed class SinglePropertyCopy
